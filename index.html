@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>WASM Test</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+        }
+
+        canvas {
+            display: block;
+            touch-action: none;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+<canvas id="canvas"></canvas>
+
+</div>
+
+<script src="./build/app.js"></script>
+
+<script>
+    const canvas = document.getElementById("canvas");
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+
+
+    // const $result = document.getElementById("result")
+    Module.onRuntimeInitialized = () => {
+        const engine = new Module.Engine(canvas);
+
+        canvas.addEventListener("pointerdown", (e) => {
+            engine.capture_mouse(0, e.clientX, e.clientY);
+        })
+
+        canvas.addEventListener("pointerrawupdate", (e) => {
+            const events = e.getCoalescedEvents();
+            engine.capture_mouse(
+                1,
+                e.clientX,
+                e.clientY
+            );
+            for (const ev of events) {
+
+            }
+        });
+
+
+        canvas.addEventListener("pointerup", (e) => {
+            engine.capture_mouse(2, e.clientX, e.clientY);
+        })
+
+        canvas.addEventListener("wheel", ({deltaX, deltaY}) => {
+            engine.capture_wheel(deltaX, deltaY);
+        })
+
+        window.addEventListener("keydown", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            engine.capture_keyboard("down", e.keyCode);
+        })
+
+        window.addEventListener("keyup", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            engine.capture_keyboard("up", e.keyCode);
+        })
+
+        const loop = (time) => {
+            engine.update(time);
+            requestAnimationFrame(loop);
+        }
+        requestAnimationFrame(loop);
+    };
+</script>
+</body>
+
+</html>
