@@ -87,6 +87,9 @@ public:
     void textAlign(TextAlign textAlign, TextBaseLine baseLine);
     void drawText(std::string text, int x, int y);
     void textFont(std::string font);
+
+    void drawImage(val canvas, int x, int y, int w, int h, int sx, int sy, int sw, int sh);
+    void drawImagen(val canvas, int x, int  y, int w, int h);
     void clear();
     val canvas();
     void setSize(int w, int h);

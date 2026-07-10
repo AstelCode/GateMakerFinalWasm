@@ -41,6 +41,30 @@ void Canvas2D::textFont(std::string font) {
     ctx.set("font", font);
 }
 
+void Canvas2D::drawImage(val canvas, int x, int y, int w, int h, int sx, int sy, int sw, int sh) {
+    ctx.call<void>("drawImage",
+                   canvas,
+                   x,
+                   y,
+                   w,
+                   h,
+                   sx,
+                   sy,
+                   sw,
+                   sh
+    );
+}
+
+void Canvas2D::drawImagen(val canvas, int x, int y, int w, int h) {
+    ctx.call<void>("drawImage",
+                   canvas,
+                   x,
+                   y,
+                   w,
+                   h
+    );
+}
+
 void Canvas2D::clear() {
     val canvas = ctx["canvas"];
     int width = canvas["width"].as<int>();

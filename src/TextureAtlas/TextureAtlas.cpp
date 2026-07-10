@@ -61,7 +61,7 @@ SpriteRegion TextureAtlas::allocate(int width, int height) {
     return nuevo;
 }
 
-void TextureAtlas::free(SpriteRegion& region) {
+void TextureAtlas::free(SpriteRegion &region) {
     int k = 0, l = 0;
     for (k = region.y; k < region.y + region.height; k++) {
         for (l = region.x; l < region.x + region.width; l++) {
@@ -70,11 +70,51 @@ void TextureAtlas::free(SpriteRegion& region) {
     }
 }
 
-void TextureAtlas::draw(SpriteRegion &region, Canvas2D &canvas) {
-    m_canvas.call<void>("drawImage",canvas.can)
-
+void TextureAtlas::use(SpriteRegion &region) {
+    m_spriteRegion = region;
+    m_temp_canvas.width(region.width * TEXTURE_ATLAS_CELL_SIZE);
+    m_temp_canvas.height(region.height * TEXTURE_ATLAS_CELL_SIZE);
+    is_loaded = false;
 }
 
-val TextureAtlas::canvas() const {
-    return m_canvas;
+Canvas2D &TextureAtlas::tempCanvas() {
+    return m_temp_canvas;
 }
+
+
+void TextureAtlas::loadSprite() {
+    if (is_loaded)return;
+    m_context.call<void>("clearRect",
+                         m_spriteRegion.x * TEXTURE_ATLAS_CELL_SIZE,
+                         m_spriteRegion.y * TEXTURE_ATLAS_CELL_SIZE,
+                         m_spriteRegion.width * TEXTURE_ATLAS_CELL_SIZE,
+                         m_spriteRegion.height * TEXTURE_ATLAS_CELL_SIZE
+    );
+
+    m_context.call<void>("drawImage",
+                         m_temp_canvas.canvas(),
+                         m_spriteRegion.x * TEXTURE_ATLAS_CELL_SIZE,
+                         m_spriteRegion.y * TEXTURE_ATLAS_CELL_SIZE,
+                         m_spriteRegion.width * TEXTURE_ATLAS_CELL_SIZE,
+                         m_spriteRegion.height * TEXTURE_ATLAS_CELL_SIZE,
+                         0,
+                         0,
+                         m_temp_canvas.height(),
+                         m_temp_canvas.width()
+    );
+    is_loaded = true;
+}
+
+void TextureAtlas::draw(Canvas2D &canvas, SpriteRegion &region, int x, int y, int width, int height) {
+    canvas.drawImage(m_canvas,
+        x,
+        y,
+        width,
+        height,
+        region.x * TEXTURE_ATLAS_CELL_SIZE,
+        region.y * TEXTURE_ATLAS_CELL_SIZE,
+        region.width * TEXTURE_ATLAS_CELL_SIZE,
+        region.height * TEXTURE_ATLAS_CELL_SIZE
+    );
+}
+

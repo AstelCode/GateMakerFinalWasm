@@ -17,17 +17,31 @@ static const int TEXTURE_ATLAS_CELL_SIZE = 32;
 
 class TextureAtlas {
 public:
-    vector<vector<bool>> bitMap;
+    vector<vector<bool> > bitMap;
+
     TextureAtlas(int width, int height);
-    ~TextureAtlas ();
+
+    ~TextureAtlas();
+
     SpriteRegion allocate(int width, int height);
-    void free(SpriteRegion& region);
-    void draw(SpriteRegion& region, Canvas2D& canvas);
+
+    void free(SpriteRegion &region);
+
+    void use(SpriteRegion &region);
+
+    Canvas2D &tempCanvas();
+
+    void loadSprite();
+
+    void draw(Canvas2D &canvas, SpriteRegion &region, int x, int y, int width, int height);
+
 private:
     int grid_width, grid_height;
-    val canvas() const;
     val m_context;
     val m_canvas;
+    SpriteRegion m_spriteRegion;
+    Canvas2D m_temp_canvas;
+    bool is_loaded = true;
 };
 
 
