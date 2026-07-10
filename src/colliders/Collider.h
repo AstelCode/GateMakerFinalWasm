@@ -4,7 +4,7 @@
 
 #ifndef WASM_PROJECT_COLLIDER_H
 #define WASM_PROJECT_COLLIDER_H
-#include "../math/Vector.h";
+#include "math/Vector.h"
 
 class Collider {
 protected:
