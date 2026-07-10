@@ -19,7 +19,7 @@ class TextureAtlas {
 public:
     vector<vector<bool> > bitMap;
 
-    TextureAtlas(int width, int height);
+    TextureAtlas(int grid_width, int grid_height);
 
     ~TextureAtlas();
 

@@ -5,8 +5,9 @@
 #include "Engine.h"
 #include "math/Vector.h"
 
-Engine::Engine(val htmlCanvas)  : canvas(htmlCanvas)
+Engine::Engine(val htmlCanvas)  : canvas(htmlCanvas), textureAtlas(50,50)
 {
+
     //entities.push_back(std::make_unique<Rect>(100, 100));
 }
 

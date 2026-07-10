@@ -11,12 +11,14 @@
 #include "core/Canvas2D.h"
 #include "core/FPSCounter.h"
 #include "entities/Entity.h"
+#include "TextureAtlas/TextureAtlas.h"
 
 class Engine
 {
 private:
     Mouse mouse;
     Keyboard keyboard;
+    TextureAtlas textureAtlas;
     Canvas2D canvas;
     FPSCounter fpsCounter;
     std::vector<Entity*> entities;
