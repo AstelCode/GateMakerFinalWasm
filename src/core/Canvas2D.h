@@ -75,15 +75,25 @@ class Canvas2D
 {
 private:
     val ctx;
+    val m_canvas;
+    int m_width;
+    int m_height;
 
 public:
     Canvas2D(val canvas);
+    Canvas2D();
     void fillRect(int x, int y, int w, int h);
     void drawFPS(int fps);
     void textAlign(TextAlign textAlign, TextBaseLine baseLine);
     void drawText(std::string text, int x, int y);
     void textFont(std::string font);
     void clear();
+    val canvas();
+    void setSize(int w, int h);
+    void width(int w);
+    void height(int h);
+    int width();
+    int height();
 };
 
 #endif //WASM_PROJECT_CANVAS2D_H

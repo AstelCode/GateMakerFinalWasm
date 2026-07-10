@@ -19,7 +19,7 @@ private:
     Keyboard keyboard;
     Canvas2D canvas;
     FPSCounter fpsCounter;
-    std::vector<std::unique_ptr<Entity>> entities;
+    std::vector<Entity*> entities;
 
 public:
     Engine(val htmlCanvas);

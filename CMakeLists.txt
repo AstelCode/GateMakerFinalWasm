@@ -19,8 +19,19 @@ add_executable(wasm_project
         src/Engine.cpp
         src/Engine.h
         src/entities/Entity.h
-        src/entities/Rect.cpp
-        src/entities/Rect.h
+        src/math/Vector.cpp
+        src/math/Vector.h
+        src/colliders/RectCollider.cpp
+        src/colliders/RectCollider.h
+        src/colliders/Collider.cpp
+        src/colliders/Collider.h
+        src/math/Transform.cpp
+        src/math/Transform.h
+        src/AABB/AABB.cpp
+        src/AABB/AABB.h
+        src/TextureAtlas/TextureAtlas.cpp
+        src/TextureAtlas/TextureAtlas.h
+        src/TextureAtlas/SpriteRegion.h
 )
 
 if (EMSCRIPTEN)

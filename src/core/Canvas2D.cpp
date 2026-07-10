@@ -6,6 +6,13 @@
 
 Canvas2D::Canvas2D(val canvas) {
     ctx = canvas.call<val>("getContext", std::string("2d"));
+    m_canvas = canvas;
+}
+
+Canvas2D::Canvas2D() {
+    val document = val::global("document");
+    m_canvas = document.call<val>("createElement", std::string("canvas"));
+    ctx = m_canvas.call<val>("getContext", std::string("2d"));
 }
 
 void Canvas2D::fillRect(int x, int y, int w, int h) {
@@ -39,4 +46,33 @@ void Canvas2D::clear() {
     int width = canvas["width"].as<int>();
     int height = canvas["height"].as<int>();
     ctx.call<void>("clearRect", 0, 0, width, height);
+}
+
+val Canvas2D::canvas() {
+    return m_canvas;
+}
+
+void Canvas2D::setSize(int w, int h) {
+    m_width = w;
+    m_height = h;
+    m_canvas.set("width", m_width);
+    m_canvas.set("height", m_height);
+}
+
+void Canvas2D::width(int w) {
+    m_width = w;
+    m_canvas.set("width", m_width);
+}
+
+void Canvas2D::height(int h) {
+    m_height = h;
+    m_canvas.set("height", m_height);
+}
+
+int Canvas2D::width() {
+    return m_width;
+}
+
+int Canvas2D::height() {
+    return m_height;
 }

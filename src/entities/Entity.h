@@ -5,10 +5,20 @@
 #ifndef WASM_PROJECT_ENTITY_H
 #define WASM_PROJECT_ENTITY_H
 
+#include "colliders/Collider.h"
 #include "core/Canvas2D.h"
+#include "math/Transform.h"
+#include "AABB/AABB.h"
 
 class Entity {
 public:
+    Collider *collider;
+    Transform transform;
+    AABB boundingBox;
+    bool visible;
+    bool is_ready;
+
+
     virtual void update(long time) = 0;
 
     virtual void draw(Canvas2D canvas) = 0;
