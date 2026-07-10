@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "SpriteRegion.h"
-#include "core/Canvas2D.h"
+#include "../canvas/Canvas2D.h"
 
 using namespace std;
 using namespace emscripten;

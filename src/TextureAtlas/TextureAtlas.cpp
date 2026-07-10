@@ -26,12 +26,17 @@ SpriteRegion TextureAtlas::allocate(int width, int height) {
     int k = 0, l = 0, i = 0, j = 0;
     bool found = false;
     SpriteRegion nuevo{};
-    for (i = 0; i <= grid_width - width; i++) {
-        for (j = 0; j <= grid_height - height; j++) {
+
+    int n_grid_width = ceil((double) width / (double) TEXTURE_ATLAS_CELL_SIZE);
+    int n_grid_height = ceil((double) height / (double) TEXTURE_ATLAS_CELL_SIZE);
+
+
+    for (i = 0; i <= grid_width - n_grid_width; i++) {
+        for (j = 0; j <= grid_height - n_grid_height; j++) {
             found = true;
-            for (k = 0; k < width; k++) {
-                for (l = 0; l < height; l++) {
-                    if (!bitMap[l + j][k + i]) {
+            for (k = 0; k < n_grid_width; k++) {
+                for (l = 0; l < n_grid_height; l++) {
+                    if (bitMap[l + j][k + i]) {
                         found = false;
                         break;
                     }
@@ -50,11 +55,13 @@ SpriteRegion TextureAtlas::allocate(int width, int height) {
     if (found) {
         nuevo.x = i;
         nuevo.y = j;
+        nuevo.spanX = n_grid_width;
+        nuevo.spanY = n_grid_height;
         nuevo.width = width;
         nuevo.height = height;
-        for (k = j; k < j + height; k++) {
-            for (l = i; l < i + width; l++) {
-                bitMap[j][i] = true;
+        for (k = j; k < j + n_grid_height; k++) {
+            for (l = i; l < i + n_grid_width; l++) {
+                bitMap[k][l] = true;
             }
         }
     }
@@ -72,8 +79,8 @@ void TextureAtlas::free(SpriteRegion &region) {
 
 void TextureAtlas::use(SpriteRegion &region) {
     m_spriteRegion = region;
-    m_temp_canvas.width(region.width * TEXTURE_ATLAS_CELL_SIZE);
-    m_temp_canvas.height(region.height * TEXTURE_ATLAS_CELL_SIZE);
+    m_temp_canvas.width(region.spanX * TEXTURE_ATLAS_CELL_SIZE);
+    m_temp_canvas.height(region.spanY * TEXTURE_ATLAS_CELL_SIZE);
     is_loaded = false;
 }
 
@@ -87,16 +94,16 @@ void TextureAtlas::loadSprite() {
     m_context.call<void>("clearRect",
                          m_spriteRegion.x * TEXTURE_ATLAS_CELL_SIZE,
                          m_spriteRegion.y * TEXTURE_ATLAS_CELL_SIZE,
-                         m_spriteRegion.width * TEXTURE_ATLAS_CELL_SIZE,
-                         m_spriteRegion.height * TEXTURE_ATLAS_CELL_SIZE
+                         m_spriteRegion.width,
+                         m_spriteRegion.height
     );
 
     m_context.call<void>("drawImage",
                          m_temp_canvas.canvas(),
                          m_spriteRegion.x * TEXTURE_ATLAS_CELL_SIZE,
                          m_spriteRegion.y * TEXTURE_ATLAS_CELL_SIZE,
-                         m_spriteRegion.width * TEXTURE_ATLAS_CELL_SIZE,
-                         m_spriteRegion.height * TEXTURE_ATLAS_CELL_SIZE,
+                         m_spriteRegion.width,
+                         m_spriteRegion.height,
                          0,
                          0,
                          m_temp_canvas.height(),
@@ -107,14 +114,13 @@ void TextureAtlas::loadSprite() {
 
 void TextureAtlas::draw(Canvas2D &canvas, SpriteRegion &region, int x, int y, int width, int height) {
     canvas.drawImage(m_canvas,
-        x,
-        y,
-        width,
-        height,
-        region.x * TEXTURE_ATLAS_CELL_SIZE,
-        region.y * TEXTURE_ATLAS_CELL_SIZE,
-        region.width * TEXTURE_ATLAS_CELL_SIZE,
-        region.height * TEXTURE_ATLAS_CELL_SIZE
+                     x,
+                     y,
+                     width,
+                     height,
+                     region.x * TEXTURE_ATLAS_CELL_SIZE,
+                     region.y * TEXTURE_ATLAS_CELL_SIZE,
+                     region.width,
+                     region.height
     );
 }
-

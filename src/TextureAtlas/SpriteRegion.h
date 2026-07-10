@@ -7,6 +7,8 @@
 struct SpriteRegion {
     int x;
     int y;
+    int spanX;
+    int spanY;
     int width;
     int height;
 };

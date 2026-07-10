@@ -6,7 +6,7 @@
 #define WASM_PROJECT_ENTITY_H
 
 #include "colliders/Collider.h"
-#include "core/Canvas2D.h"
+#include "../canvas/Canvas2D.h"
 #include "math/Transform.h"
 #include "AABB/AABB.h"
 

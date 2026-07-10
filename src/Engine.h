@@ -8,8 +8,8 @@
 #include <vector>
 #include "Mouse.h"
 #include "Keyboard.h"
-#include "core/Canvas2D.h"
-#include "core/FPSCounter.h"
+#include "canvas/Canvas2D.h"
+#include "utils/FPSCounter.h"
 #include "entities/Entity.h"
 #include "TextureAtlas/TextureAtlas.h"
 
@@ -24,6 +24,8 @@ private:
     std::vector<Entity*> entities;
 
 public:
+
+    SpriteRegion region;
     Engine(val htmlCanvas);
     void capture_mouse(int event, double _x, double _y, int button_idx);
     void capture_wheel(double deltaX, double deltaY);

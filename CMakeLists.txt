@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.20)
 project(wasm_project)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 include_directories(src)
 include_directories(src/inputs)
@@ -12,10 +14,10 @@ add_executable(wasm_project
         src/inputs/Mouse.h
         src/inputs/Keyboard.cpp
         src/inputs/Keyboard.h
-        src/core/Canvas2D.cpp
-        src/core/Canvas2D.h
-        src/core/FPSCounter.cpp
-        src/core/FPSCounter.h
+        src/canvas/Canvas2D.cpp
+        src/canvas/Canvas2D.h
+        src/utils/FPSCounter.cpp
+        src/utils/FPSCounter.h
         src/Engine.cpp
         src/Engine.h
         src/entities/Entity.h

@@ -5,10 +5,16 @@
 #include "Engine.h"
 #include "math/Vector.h"
 
-Engine::Engine(val htmlCanvas)  : canvas(htmlCanvas), textureAtlas(50,50)
-{
-
+Engine::Engine(val htmlCanvas) : canvas(htmlCanvas), textureAtlas(50, 50) {
     //entities.push_back(std::make_unique<Rect>(100, 100));
+    SpriteRegion region = textureAtlas.allocate(200, 200);
+    textureAtlas.use(region);
+    //val console = val::global("console");
+    //console.call<void>("log", region.x, region.y, region.width, region.height);
+    Canvas2D *canvas = &textureAtlas.tempCanvas();
+    canvas->fillRect(10,10,200,200);
+    textureAtlas.loadSprite();
+    this->region = region;
 }
 
 void Engine::capture_mouse(int event, double _x, double _y, int button_idx) {
@@ -28,7 +34,9 @@ void Engine::update(long time) {
     fpsCounter.update();
     canvas.drawFPS(fpsCounter.getFPS());
 
-    for (const auto& e : entities) {
+    textureAtlas.draw(canvas,region,10,10,200,200);
+
+    for (const auto &e: entities) {
         e->update(time);
         e->draw(canvas);
     }
