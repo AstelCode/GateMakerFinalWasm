@@ -100,27 +100,27 @@ void TextureAtlas::loadSprite() {
 
     m_context.call<void>("drawImage",
                          m_temp_canvas.canvas(),
-                         m_spriteRegion.x * TEXTURE_ATLAS_CELL_SIZE,
-                         m_spriteRegion.y * TEXTURE_ATLAS_CELL_SIZE,
-                         m_spriteRegion.width,
-                         m_spriteRegion.height,
                          0,
                          0,
                          m_temp_canvas.height(),
-                         m_temp_canvas.width()
+                         m_temp_canvas.width(),
+                         m_spriteRegion.x * TEXTURE_ATLAS_CELL_SIZE,
+                         m_spriteRegion.y * TEXTURE_ATLAS_CELL_SIZE,
+                         m_spriteRegion.width,
+                         m_spriteRegion.height
     );
     is_loaded = true;
 }
 
 void TextureAtlas::draw(Canvas2D &canvas, SpriteRegion &region, int x, int y, int width, int height) {
     canvas.drawImage(m_canvas,
-                     x,
-                     y,
-                     width,
-                     height,
                      region.x * TEXTURE_ATLAS_CELL_SIZE,
                      region.y * TEXTURE_ATLAS_CELL_SIZE,
                      region.width,
-                     region.height
+                     region.height,
+                     x,
+                     y,
+                     width,
+                     height
     );
 }

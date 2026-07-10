@@ -34,7 +34,7 @@ void Engine::update(long time) {
     fpsCounter.update();
     canvas.drawFPS(fpsCounter.getFPS());
 
-    textureAtlas.draw(canvas,region,10,10,200,200);
+    textureAtlas.draw(canvas,region,80,80,200,100);
 
     for (const auto &e: entities) {
         e->update(time);
