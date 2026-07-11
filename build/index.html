@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>WASM Test</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+<canvas id="canvas"></canvas>
+
+</div>
+
+<script async src="app.js"></script>
+
+<script>
+    /*
+    const canvas = document.getElementById("canvas");
+    canvas.width = innerWidth - 15;
+    canvas.height = innerHeight - 2;
+
+
+    window.onresize = () => {
+        canvas.width = innerWidth - 15;
+        canvas.height = innerHeight - 2;
+    }
+
+
+    // const $result = document.getElementById("result")
+    Module.onRuntimeInitialized = () => {
+        const engine = new Module.Engine(canvas);
+
+        canvas.addEventListener("pointerdown", (e) => {
+            engine.capture_mouse(0, e.clientX, e.clientY);
+        })
+
+        canvas.addEventListener("pointerrawupdate", (e) => {
+            const events = e.getCoalescedEvents();
+            engine.capture_mouse(
+                1,
+                e.clientX,
+                e.clientY
+            );
+            for (const ev of events) {
+
+            }
+        });
+
+
+        canvas.addEventListener("pointerup", (e) => {
+            engine.capture_mouse(2, e.clientX, e.clientY);
+        })
+
+        canvas.addEventListener("wheel", ({deltaX, deltaY}) => {
+            engine.capture_wheel(deltaX, deltaY);
+        })
+
+        window.addEventListener("keydown", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            engine.capture_keyboard("down", e.keyCode);
+        })
+
+        window.addEventListener("keyup", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            engine.capture_keyboard("up", e.keyCode);
+        })
+
+        const loop = (time) => {
+            engine.update(time);
+            requestAnimationFrame(loop);
+        }
+        requestAnimationFrame(loop);
+    };*/
+    var Module = {
+        canvas: (function() {
+            var canvas = document.getElementById('canvas');
+
+            canvas.addEventListener("webglcontextlost", function(e) {
+                alert('El contexto WebGL se ha perdido. Por favor, recarga la página.');
+                e.preventDefault();
+            }, false);
+
+            return canvas;
+        })()
+    };
+
+</script>
+
+</body>
+
+</html>

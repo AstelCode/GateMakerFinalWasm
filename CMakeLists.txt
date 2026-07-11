@@ -4,7 +4,7 @@ project(wasm_project)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
-
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include_directories(src)
 include_directories(src/inputs)
 
@@ -34,21 +34,35 @@ add_executable(wasm_project
         src/TextureAtlas/TextureAtlas.cpp
         src/TextureAtlas/TextureAtlas.h
         src/TextureAtlas/SpriteRegion.h
+        src/renderer/Renderer.cpp
+        src/renderer/Renderer.h
 )
 
 if (EMSCRIPTEN)
-    set(CARPETA_SALIDA "${CMAKE_CURRENT_SOURCE_DIR}/build")
+    if (EMSCRIPTEN)
+        set(CARPETA_SALIDA "${CMAKE_CURRENT_SOURCE_DIR}/build")
 
-    set_target_properties(wasm_project PROPERTIES
-            OUTPUT_NAME "app"
-            SUFFIX ".js"
-            RUNTIME_OUTPUT_DIRECTORY "${CARPETA_SALIDA}"
-    )
+        # 1. Opciones de Compilación (Headers & Parsing)
+        target_compile_options(wasm_project PRIVATE
+                -g
+                "-sUSE_SDL=2"
+                "-sUSE_SDL_TTF=2"
+        )
 
-    target_link_options(wasm_project PRIVATE
-            "-sWASM=1"
-            "--bind"
-            "-sEXPORTED_RUNTIME_METHODS=ccall,cwrap"
-            "-sALLOW_MEMORY_GROWTH=1"
-    )
+        # Configuración de las propiedades del ejecutable
+        set_target_properties(wasm_project PROPERTIES
+                OUTPUT_NAME "app"
+                SUFFIX ".js"
+                RUNTIME_OUTPUT_DIRECTORY "${CARPETA_SALIDA}"
+        )
+
+        # 2. Opciones de Enlazado (Linker) usando propiedades explícitas
+        # Esto asegura que CMake pase correctamente las banderas especiales a Emscripten
+        set_target_properties(wasm_project PROPERTIES
+                LINK_FLAGS "--bind -sWASM=1 -sUSE_SDL=2 -sUSE_SDL_TTF=2 -sALLOW_MEMORY_GROWTH=1 -sGROWABLE_ARRAYBUFFERS=0 -sEXPORTED_RUNTIME_METHODS=ccall,cwrap -O3 -sPTHREAD_POOL_SIZE=navigator.hardwareConcurrency --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/assets"
+        )
+
+
+    endif()
+    #--embed-file
 endif()
