@@ -6,36 +6,45 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 include_directories(src)
-include_directories(src/inputs)
+include_directories(src/Engine/controllers)
 
 add_executable(wasm_project
         src/main.cpp
-        src/inputs/Mouse.cpp
-        src/inputs/Mouse.h
-        src/inputs/Keyboard.cpp
-        src/inputs/Keyboard.h
-        src/canvas/Canvas2D.cpp
-        src/canvas/Canvas2D.h
-        src/utils/FPSCounter.cpp
-        src/utils/FPSCounter.h
-        src/Engine.cpp
-        src/Engine.h
-        src/entities/Entity.h
-        src/math/Vector.cpp
-        src/math/Vector.h
-        src/colliders/RectCollider.cpp
-        src/colliders/RectCollider.h
-        src/colliders/Collider.cpp
-        src/colliders/Collider.h
-        src/math/Transform.cpp
-        src/math/Transform.h
-        src/AABB/AABB.cpp
-        src/AABB/AABB.h
-        src/TextureAtlas/TextureAtlas.cpp
-        src/TextureAtlas/TextureAtlas.h
-        src/TextureAtlas/SpriteRegion.h
-        src/renderer/Renderer.cpp
-        src/renderer/Renderer.h
+        src/Engine/controllers/Mouse.cpp
+        src/Engine/controllers/Mouse.h
+        src/Engine/controllers/Keyboard.cpp
+        src/Engine/controllers/Keyboard.h
+        src/Engine/utils/FPSCounter.cpp
+        src/Engine/utils/FPSCounter.h
+        src/Engine/App.cpp
+        src/Engine/App.h
+        src/Engine/entities/Entity.h
+        src/Engine/math/Vector.cpp
+        src/Engine/math/Vector.h
+        src/Engine/colliders/RectCollider.cpp
+        src/Engine/colliders/RectCollider.h
+        src/Engine/colliders/Collider.cpp
+        src/Engine/colliders/Collider.h
+        src/Engine/math/Transform.cpp
+        src/Engine/math/Transform.h
+        src/Engine/colliders/AABB.cpp
+        src/Engine/colliders/AABB.h
+        src/Engine/renderer/Renderer.cpp
+        src/Engine/renderer/Renderer.h
+        src/Engine/colliders/Circle.cpp
+        src/Engine/colliders/Circle.h
+        src/Engine/colliders/ColliderManager.cpp
+        src/Engine/colliders/ColliderManager.h
+        src/Engine/colliders/Area.h
+        src/Engine/renderer/RenderEntity.cpp
+        src/Engine/renderer/RenderEntity.h
+        src/Engine/FontManager/FontManager.cpp
+        src/Engine/FontManager/FontManager.h
+        src/Engine/FontManager/FontData.h
+        src/Engine/EngineContext.h
+        src/Engine/entities/Entity.cpp
+        src/Engine/entities/Text.cpp
+        src/Engine/entities/Text.h
 )
 
 if (EMSCRIPTEN)

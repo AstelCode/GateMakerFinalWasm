@@ -1,0 +1,76 @@
+//
+// Created by MSI on 5/07/2026.
+//
+
+#include "App.h"
+
+#include <SDL2/SDL_events.h>
+
+using namespace Engine;
+
+App::App() : renderer(800, 600) {
+    renderer.init();
+    fontManager.init();
+
+    fontManager.addFont({"Roboto-Regular", "assets/fonts/Roboto-Regular.ttf"});
+
+    context = make_shared<EngineContext>();
+    context->renderer = &renderer;
+    context->keyboard = &keyboard;
+    context->mouse = &mouse;
+    context->font_manager = &fontManager;
+
+    Entity::setContext(context);
+    text = new Text();
+    text->setFont("Roboto-Regular",23);
+    entities.push_back(unique_ptr<Entity>(text));
+}
+
+App::~App() {
+    fontManager.quit();
+}
+
+void App::capture_events() {
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_MOUSEMOTION:
+                mouse.mouse_move(event.motion.x, event.motion.y);
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                mouse.mouse_down(event.motion.x, event.motion.y, event.button.button);
+                break;
+            case SDL_MOUSEBUTTONUP:
+                mouse.mouse_up(event.motion.x, event.motion.y, event.button.button);
+                break;
+            case SDL_MOUSEWHEEL:
+                mouse.wheel(event.wheel.x, event.wheel.y);
+                break;
+            case SDL_KEYDOWN:
+                keyboard.capture_keyboard(0, event.key.keysym.sym);
+                break;
+            case SDL_KEYUP:
+                keyboard.capture_keyboard(1, event.key.keysym.sym);
+                break;
+        }
+    }
+}
+
+void App::update() {
+    fpsCounter.update();
+
+    renderer.clear(255, 0, 0, 255);
+
+    text->setText("FPS: " + std::to_string(fpsCounter.getFPS()));
+    text->updateTexture();
+
+    for (auto e : entities) {
+        (*e).update();
+        (*e).draw();
+    }
+
+    renderer.render();
+}
+
+// ::Engine::Engine::Engine() {
+// }
