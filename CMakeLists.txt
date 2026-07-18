@@ -45,6 +45,11 @@ add_executable(wasm_project
         src/Engine/entities/Entity.cpp
         src/Engine/entities/Text.cpp
         src/Engine/entities/Text.h
+        src/Engine/Tree/EntityTree.cpp
+        src/Engine/Tree/EntityTree.h
+        src/Engine/math/Matrix3x3.cpp
+        src/Engine/math/Matrix3x3.h
+        src/Engine/math/TransformData.h
 )
 
 if (EMSCRIPTEN)

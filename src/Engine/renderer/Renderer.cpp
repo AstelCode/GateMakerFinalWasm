@@ -3,8 +3,14 @@
 //
 
 #include "Renderer.h"
+
+#include <emscripten/html5.h>
+#include <emscripten/val.h>
 using namespace Engine::Renderer;
-Renderer::Renderer(int width, int height) {
+using namespace emscripten;
+Renderer::Renderer() {
+    int width = val::global("window")["innerWidth"].as<int>();
+    int height = val::global("window")["innerHeight"].as<int>();
     this->width = width;
     this->height = height;
 }
@@ -35,4 +41,13 @@ void Renderer::destroy() {
 
 SDL_Renderer * Renderer::get() {
     return renderer;
+}
+
+
+void Renderer::resize(int width, int height) {
+    this->width = width;
+    this->height = height;
+    emscripten_set_canvas_element_size("#canvas", width, height);
+    SDL_SetWindowSize(window, width, height);
+    SDL_RenderSetViewport(renderer, nullptr);
 }

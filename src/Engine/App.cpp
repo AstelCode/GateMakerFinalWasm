@@ -8,7 +8,7 @@
 
 using namespace Engine;
 
-App::App() : renderer(800, 600) {
+App::App() : renderer() {
     renderer.init();
     fontManager.init();
 
@@ -19,11 +19,16 @@ App::App() : renderer(800, 600) {
     context->keyboard = &keyboard;
     context->mouse = &mouse;
     context->font_manager = &fontManager;
+    context->tree = &tree;
 
     Entity::setContext(context);
-    text = new Text();
-    text->setFont("Roboto-Regular",23);
-    entities.push_back(unique_ptr<Entity>(text));
+    Text *text = new Text();
+    text->setFont("Roboto-Regular", 23);
+    tree.addEntity(text);
+
+    text->transform.localMatrix.setTransform(1, 0, 0, 0);
+
+    tree.registerEntity("FPS_DISPLAY", text);
 }
 
 App::~App() {
@@ -59,18 +64,20 @@ void App::capture_events() {
 void App::update() {
     fpsCounter.update();
 
-    renderer.clear(255, 0, 0, 255);
+    renderer.clear(255, 255, 255, 255);
 
-    text->setText("FPS: " + std::to_string(fpsCounter.getFPS()));
-    text->updateTexture();
-
-    for (auto e : entities) {
-        (*e).update();
-        (*e).draw();
+    // text->setText("FPS: " + std::to_string(fpsCounter.getFPS()));
+    // text->updateTexture();
+    Text *text = static_cast<Text *>(tree.findEntity("FPS_DISPLAY").get());
+    if (text != nullptr) {
+        text->setText("FPS: " + std::to_string(fpsCounter.getFPS()));
+        text->updateTexture();
     }
 
+    tree.update();
     renderer.render();
 }
 
-// ::Engine::Engine::Engine() {
-// }
+void App::resize(int width, int height) {
+    renderer.resize(width, height);
+}

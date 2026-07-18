@@ -43,12 +43,32 @@ void Entities::Text::setFont(string name, int size) {
 }
 
 void Entities::Text::draw() {
-    //     rect.x = _x;
-    //     rect.y = _y;
     SDL_Renderer *renderer = context->renderer->get();
-    if (texture) {
-        SDL_RenderCopy(renderer, texture, NULL, &rect);
-    }
+
+    if (!texture)
+        return;
+
+    SDL_Rect dst = rect;
+
+    TransformData globalTransform = transform.getGlobal();
+    dst.x = static_cast<int>(globalTransform.x);
+    dst.y = static_cast<int>(globalTransform.y);
+    dst.w = static_cast<int>(rect.w * globalTransform.scale);
+    dst.h = static_cast<int>(rect.h * globalTransform.scale);
+    SDL_Point center{
+        dst.w / 2,
+        dst.h / 2
+    };
+
+    SDL_RenderCopyEx(
+        renderer,
+        texture,
+        nullptr,
+        &dst,
+        globalTransform.angle * 180.0 / M_PI, // SDL usa grados
+        &center,
+        SDL_FLIP_NONE
+    );
 }
 
 void Entities::Text::updateTexture() {

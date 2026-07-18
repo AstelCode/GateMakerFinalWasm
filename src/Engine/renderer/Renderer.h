@@ -16,9 +16,10 @@ namespace Engine::Renderer {
         int width, height;
 
     public:
-        Renderer(int width, int height);
+        Renderer();
         void init();
         void clear(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+        void resize(int width, int height);
         void render();
         void destroy();
         SDL_Renderer* get();

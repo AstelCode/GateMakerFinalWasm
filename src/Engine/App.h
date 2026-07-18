@@ -16,6 +16,7 @@
 #include <memory>
 
 #include "entities/Text.h"
+#include "Tree/EntityTree.h"
 
 using namespace std;
 using namespace Engine::Controllers;
@@ -31,13 +32,14 @@ namespace Engine {
         FontManager::FontManager fontManager;
         Utils::FPSCounter fpsCounter;
         shared_ptr<EngineContext> context;
-        vector<shared_ptr<Entity>> entities;
-        Text *text;
+        //Text *text;
+        EntityTree tree;
     public:
         App();
         ~App();
         void capture_events();
         void update();
+        void resize(int width, int height);
     };
 }
 
