@@ -36,8 +36,6 @@ add_executable(wasm_project
         src/Engine/colliders/ColliderManager.cpp
         src/Engine/colliders/ColliderManager.h
         src/Engine/colliders/Area.h
-        src/Engine/renderer/RenderEntity.cpp
-        src/Engine/renderer/RenderEntity.h
         src/Engine/FontManager/FontManager.cpp
         src/Engine/FontManager/FontManager.h
         src/Engine/FontManager/FontData.h
@@ -50,6 +48,15 @@ add_executable(wasm_project
         src/Engine/math/Matrix3x3.cpp
         src/Engine/math/Matrix3x3.h
         src/Engine/math/TransformData.h
+        src/Engine/TextureManager/TextureManager.cpp
+        src/Engine/TextureManager/TextureManager.h
+        src/Engine/TextureAtlas/TextureAtlas.cpp
+        src/Engine/TextureAtlas/TextureAtlas.h
+        src/GateSimulator/App.cpp
+        src/GateSimulator/App.h
+        src/Engine/Engine.h
+        src/GateSimulator/Rect.cpp
+        src/GateSimulator/Rect.h
 )
 
 if (EMSCRIPTEN)
@@ -61,6 +68,7 @@ if (EMSCRIPTEN)
                 -g
                 "-sUSE_SDL=2"
                 "-sUSE_SDL_TTF=2"
+                "-sUSE_SDL_IMAGE=2"
         )
 
         # Configuración de las propiedades del ejecutable
@@ -73,7 +81,7 @@ if (EMSCRIPTEN)
         # 2. Opciones de Enlazado (Linker) usando propiedades explícitas
         # Esto asegura que CMake pase correctamente las banderas especiales a Emscripten
         set_target_properties(wasm_project PROPERTIES
-                LINK_FLAGS "--bind -sWASM=1 -sUSE_SDL=2 -sUSE_SDL_TTF=2 -sALLOW_MEMORY_GROWTH=1 -sGROWABLE_ARRAYBUFFERS=0 -sEXPORTED_RUNTIME_METHODS=ccall,cwrap -O3 -sPTHREAD_POOL_SIZE=navigator.hardwareConcurrency --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/assets"
+                LINK_FLAGS "--bind -sWASM=1 -sUSE_SDL=2 -sUSE_SDL_TTF=2  -sUSE_SDL_IMAGE=2 -sALLOW_MEMORY_GROWTH=1 -sGROWABLE_ARRAYBUFFERS=0 -sEXPORTED_RUNTIME_METHODS=ccall,cwrap -O3 -sPTHREAD_POOL_SIZE=navigator.hardwareConcurrency --preload-file ${CMAKE_CURRENT_SOURCE_DIR}/assets@/assets"
         )
 
 

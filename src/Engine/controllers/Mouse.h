@@ -29,7 +29,6 @@ namespace Engine::Controllers {
 
         void wheel(long _deltaX, long _deltaY);
 
-    public:
         long x() { return _x; }
         long y() { return _y; }
         long dx() { return _dx; }
@@ -41,15 +40,9 @@ namespace Engine::Controllers {
         long deltaX() { return _deltaX; }
         long deltaY() { return _deltaY; }
 
-    public:
         Mouse();
 
         MouseButton mapButton(int idx);
-
-    public:
-        // void capture_mouse(int idx, long _x, long _y, MouseButton button);
-
-        // void capture_wheel(long deltaX, long deltaY);
     };
 }
 

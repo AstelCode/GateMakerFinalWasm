@@ -6,11 +6,11 @@
 #ifndef WASM_PROJECT_KEYBOARD_H
 #define WASM_PROJECT_KEYBOARD_H
 #include <map>
-using namespace std;
 
 namespace Engine::Controllers {
-    class Keyboard
-    {
+    using namespace std;
+
+    class Keyboard {
     private:
         map<char, bool> keys;
 
@@ -19,8 +19,11 @@ namespace Engine::Controllers {
 
     public:
         Keyboard();
+
         ~Keyboard();
+
         void capture_keyboard(int event, int key);
+
         bool is_pressed(int key);
     };
 }

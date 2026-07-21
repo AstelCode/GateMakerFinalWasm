@@ -24,10 +24,8 @@ void EntityTree::update() {
     }
 }
 
-shared_ptr<Entity> EntityTree::findEntity(string key) {
-    auto pair =  entitiesRegister.find(key);
-    if (pair == entitiesRegister.end()) {
-        return nullptr;
+void EntityTree::init() {
+    for (auto e: entities) {
+        (*e).init();
     }
-    return pair->second;
 }

@@ -9,25 +9,38 @@
 #include <vector>
 using namespace std;
 
-namespace Engine::Entities {
-    class Entity;
-}
-
-using namespace Engine::Entities;
+// namespace Engine::Entities {
+//     class Entity;
+// }
+//
+// using namespace Engine::Entities;
 
 
 namespace Engine {
+    using Entities::Entity;
     class EntityTree {
     public:
         void addEntity(Entity* entity);
         void registerEntity(string key, Entity* entity);
         void update();
+        void init();
 
-        shared_ptr<Entity> findEntity(string key);
+        template<typename T>
+        shared_ptr<T> findEntity(string key);
     private:
         map<string, shared_ptr<Entity>> entitiesRegister;
         vector<shared_ptr<Entity>> entities;
     };
+
+
+    template<typename T>
+    shared_ptr<T> EntityTree::findEntity(string key) {
+        auto pair = entitiesRegister.find(key);
+        if (pair == entitiesRegister.end()) {
+            return nullptr;
+        }
+        return std::static_pointer_cast<T>(pair->second);
+    }
 }
 
 

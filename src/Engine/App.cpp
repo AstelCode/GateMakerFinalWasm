@@ -6,78 +6,98 @@
 
 #include <SDL2/SDL_events.h>
 
-using namespace Engine;
 
-App::App() : renderer() {
-    renderer.init();
-    fontManager.init();
 
-    fontManager.addFont({"Roboto-Regular", "assets/fonts/Roboto-Regular.ttf"});
+namespace Engine {
+    using Engine::Entities::Text;
 
-    context = make_shared<EngineContext>();
-    context->renderer = &renderer;
-    context->keyboard = &keyboard;
-    context->mouse = &mouse;
-    context->font_manager = &fontManager;
-    context->tree = &tree;
+    App::App() {
+        TextureAtlas::TextureAtlas::setRenderer(shared_ptr<Renderer::Renderer>(&renderer));
+        TextureManager::TextureManager::setRenderer(shared_ptr<Renderer::Renderer>(&renderer));
+    }
 
-    Entity::setContext(context);
-    Text *text = new Text();
-    text->setFont("Roboto-Regular", 23);
-    tree.addEntity(text);
+    App::~App() {
+        fontManager.quit();
+    }
 
-    text->transform.localMatrix.setTransform(1, 0, 0, 0);
+    void App::init() {
+        renderer.init();
+        fontManager.init();
+        textureAtlas.init();
+        loadFonts();
+        initContext();
+        Entity::setContext(context);
+        initEntities();
+        tree.init();
+    }
 
-    tree.registerEntity("FPS_DISPLAY", text);
-}
+    void App::initContext() {
+        context = make_shared<EngineContext>();
+        context->renderer = &renderer;
+        context->keyboard = &keyboard;
+        context->mouse = &mouse;
+        context->font_manager = &fontManager;
+        context->tree = &tree;
+        context->texture_manager = &textureManager;
+        context->texture_atlas = &textureAtlas;
+    }
 
-App::~App() {
-    fontManager.quit();
-}
-
-void App::capture_events() {
-    SDL_Event event;
-    while (SDL_PollEvent(&event)) {
-        switch (event.type) {
-            case SDL_MOUSEMOTION:
-                mouse.mouse_move(event.motion.x, event.motion.y);
-                break;
-            case SDL_MOUSEBUTTONDOWN:
-                mouse.mouse_down(event.motion.x, event.motion.y, event.button.button);
-                break;
-            case SDL_MOUSEBUTTONUP:
-                mouse.mouse_up(event.motion.x, event.motion.y, event.button.button);
-                break;
-            case SDL_MOUSEWHEEL:
-                mouse.wheel(event.wheel.x, event.wheel.y);
-                break;
-            case SDL_KEYDOWN:
-                keyboard.capture_keyboard(0, event.key.keysym.sym);
-                break;
-            case SDL_KEYUP:
-                keyboard.capture_keyboard(1, event.key.keysym.sym);
-                break;
+    void App::initEntities() {
+        if (show_fps) {
+            fpsDisplay = new Text();
+            fpsDisplay->setFont("Roboto-Regular", 23);
+            fpsDisplay->transform.localMatrix.setTransform(1, 0, 0, 0);
         }
     }
-}
 
-void App::update() {
-    fpsCounter.update();
-
-    renderer.clear(255, 255, 255, 255);
-
-    // text->setText("FPS: " + std::to_string(fpsCounter.getFPS()));
-    // text->updateTexture();
-    Text *text = static_cast<Text *>(tree.findEntity("FPS_DISPLAY").get());
-    if (text != nullptr) {
-        text->setText("FPS: " + std::to_string(fpsCounter.getFPS()));
-        text->updateTexture();
+    void App::loadFonts() {
+        fontManager.addFont({"Roboto-Regular", "assets/fonts/Roboto-Regular.ttf"});
     }
 
-    tree.update();
-    renderer.render();
-}
+    void App::capture_events() {
+        SDL_Event event;
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+                case SDL_MOUSEMOTION:
+                    mouse.mouse_move(event.motion.x, event.motion.y);
+                    break;
+                case SDL_MOUSEBUTTONDOWN:
+                    mouse.mouse_down(event.motion.x, event.motion.y, event.button.button);
+                    break;
+                case SDL_MOUSEBUTTONUP:
+                    mouse.mouse_up(event.motion.x, event.motion.y, event.button.button);
+                    break;
+                case SDL_MOUSEWHEEL:
+                    mouse.wheel(event.wheel.x, event.wheel.y);
+                    break;
+                case SDL_KEYDOWN:
+                    keyboard.capture_keyboard(0, event.key.keysym.sym);
+                    break;
+                case SDL_KEYUP:
+                    keyboard.capture_keyboard(1, event.key.keysym.sym);
+                    break;
+            }
+        }
+    }
 
-void App::resize(int width, int height) {
-    renderer.resize(width, height);
+    void App::loop() {
+        renderer.clear(255, 255, 255, 255);
+        update();
+        tree.update();
+        if (show_fps) {
+            fpsCounter.update();
+            fpsDisplay->setText("FPS: " + std::to_string(fpsCounter.getFPS()));
+            fpsDisplay->updateTexture();
+            fpsDisplay->update();
+            fpsDisplay->draw();
+        }
+        renderer.render();
+    }
+
+    void App::update() {
+    }
+
+    void App::resize(int width, int height) {
+        renderer.resize(width, height);
+    }
 }

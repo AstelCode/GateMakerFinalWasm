@@ -6,15 +6,18 @@
 #define WASM_PROJECT_COLLIDERMANAGER_H
 #include"Area.h"
 #include <vector>
-using namespace std;
 
 namespace Engine::Colliders {
+    using namespace std;
+
     class ColliderManager {
     public:
         void addArea(Area area);
+
         bool getArea(int x, int y, Area &area);
 
         vector<Area> getAllAreas();
+
     private:
         vector<Area> areas;
     };

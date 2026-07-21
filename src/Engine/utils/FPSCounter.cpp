@@ -3,22 +3,23 @@
 //
 
 #include "FPSCounter.h"
+namespace Engine::Utils {
+    void FPSCounter::update() {
+        auto current = Clock::now();
 
-void Engine::Utils::FPSCounter::update() {
-    auto current = Clock::now();
+        counter++;
 
-    counter++;
+        auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(
+            current - prevTime);
 
-    auto elapsed = std::chrono::duration_cast<std::chrono::seconds>(
-        current - prevTime);
-
-    if (elapsed.count() >= 1) {
-        fps = counter;
-        counter = 0;
-        prevTime = current;
+        if (elapsed.count() >= 1) {
+            fps = counter;
+            counter = 0;
+            prevTime = current;
+        }
     }
-}
 
-int Engine::Utils::FPSCounter::getFPS() const {
-    return fps;
+    int FPSCounter::getFPS() const {
+        return fps;
+    }
 }

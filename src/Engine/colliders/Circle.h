@@ -12,9 +12,11 @@ namespace Engine::Colliders {
 
     public:
         Circle(double radius);
-        Circle(std::shared_ptr<Vector>& position, double radius);
+
+        Circle(std::shared_ptr<Vector> &position, double radius);
 
         double radius();
+
         void radius(double radius);
 
         bool pointInside(int x, int y) override;

@@ -6,22 +6,25 @@
 #define WASM_PROJECT_MATRIX3X3_H
 
 #include <math.h>
-
 #include "TransformData.h"
 #include "Vector.h"
-using namespace std;
+
 namespace Engine::Math {
+    using namespace std;
+
     class Matrix3x3 {
     public:
         Matrix3x3();
+
         void setTransform(double scale, double rotation, double x, double y);
 
         Matrix3x3 operator*(Matrix3x3 matrix);
 
         Vector operator*(Vector vector);
-        Vector mul(Vector vector, double z );
-        TransformData toTransform();
 
+        Vector mul(Vector vector, double z);
+
+        TransformData toTransform();
 
     private:
         double data[9];

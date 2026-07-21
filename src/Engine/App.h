@@ -5,7 +5,6 @@
 #ifndef WASM_PROJECT_ENGINE_H
 #define WASM_PROJECT_ENGINE_H
 
-#include <vector>
 
 #include "controllers/Mouse.h"
 #include "controllers/Keyboard.h"
@@ -14,31 +13,48 @@
 #include "renderer/Renderer.h"
 #include "utils/FPSCounter.h"
 #include <memory>
+#include "Engine/TextureAtlas/TextureAtlas.h"
 
+#include "TextureManager/TextureManager.h"
+#include "tree/EntityTree.h"
 #include "entities/Text.h"
-#include "Tree/EntityTree.h"
-
-using namespace std;
-using namespace Engine::Controllers;
-using namespace Engine::Renderer;
-using namespace Engine::Entities;
 namespace Engine {
-    class App
-    {
-    private:
+    class App {
+    protected:
         Mouse mouse;
         Keyboard keyboard;
         Renderer::Renderer renderer;
         FontManager::FontManager fontManager;
         Utils::FPSCounter fpsCounter;
+        TextureManager::TextureManager textureManager;
         shared_ptr<EngineContext> context;
-        //Text *text;
         EntityTree tree;
+        TextureAtlas::TextureAtlas textureAtlas;
+        Entities::Text *fpsDisplay;
+
+    protected:
+        bool show_fps = true;
+
     public:
         App();
-        ~App();
+
+        virtual ~App();
+
+        virtual void init();
+
+        void initContext();
+
+        virtual void initEntities();
+
+        virtual void loadFonts();
+
         void capture_events();
-        void update();
+
+        void loop();
+
+        virtual void update();
+
+
         void resize(int width, int height);
     };
 }

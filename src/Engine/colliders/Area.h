@@ -5,12 +5,11 @@
 #ifndef WASM_PROJECT_AREA_H
 #define WASM_PROJECT_AREA_H
 #include "Collider.h"
-using namespace std;
 
 namespace Engine::Colliders {
     struct Area {
         int id;
-        Collider* collider;
+        Collider *collider;
     };
 }
 

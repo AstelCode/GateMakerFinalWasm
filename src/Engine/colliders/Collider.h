@@ -6,9 +6,10 @@
 #define WASM_PROJECT_COLLIDER_H
 #include "Engine/math/Vector.h"
 #include <memory>
-using namespace Engine::Math;
 
 namespace Engine::Colliders {
+    using Math::Vector;
+
     class Collider {
     protected:
         double _width, _height;
@@ -19,9 +20,9 @@ namespace Engine::Colliders {
 
         Collider(int width, int height);
 
-        Vector* position();
+        Vector *position();
 
-        Collider(std::shared_ptr<Vector>& position, double width, double height);
+        Collider(std::shared_ptr<Vector> &position, double width, double height);
 
         double width();
 

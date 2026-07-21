@@ -4,9 +4,12 @@
 
 #ifndef WASM_PROJECT_TEXT_H
 #define WASM_PROJECT_TEXT_H
+#include <string>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
 #include "Entity.h"
-
 namespace Engine::Entities {
+    using namespace std;
     class Text : public Entity {
     private:
         SDL_Texture *texture = nullptr;

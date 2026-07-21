@@ -12,12 +12,20 @@ namespace Engine::FontManager {
     class FontManager {
     public:
         void init();
+
         void addFont(FontData data);
-        TTF_Font* loadFont(string name,  int size);
+
+        TTF_Font *loadFont(string name, int size);
+
         void quit();
+
+        SDL_Surface *loadFontSurface(string font, int size, std::string text, SDL_Color color);
+
+        SDL_Surface *loadFontSurface(TTF_Font *font, std::string text, SDL_Color color);
+
     private:
         map<string, FontData> fonts;
-        map<string, TTF_Font*> loadedFonts;
+        map<string, TTF_Font *> loadedFonts;
     };
 }
 

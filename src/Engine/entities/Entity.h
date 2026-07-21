@@ -11,20 +11,18 @@
 #include "Engine/math/Transform.h"
 #include  <memory>
 
-using namespace Engine::Colliders;
-using namespace Engine::Math;
-using namespace Engine;
-using namespace std;
 
 namespace Engine::Entities {
+    using Colliders::Collider;
+    using Colliders::AABB;
+    using Math::Transform;
+    using namespace std;
     class Entity {
     protected:
         static shared_ptr<EngineContext> context;
 
     public:
         static void setContext(shared_ptr<EngineContext> &context);
-
-
 
     public:
         Collider *collider;
@@ -33,9 +31,9 @@ namespace Engine::Entities {
         bool visible;
         bool is_ready;
 
-        void addChild(Entity* entity);
+        void addChild(Entity *entity);
 
-        vector<shared_ptr<Entity>> children;
+        vector<shared_ptr<Entity> > children;
 
         Entity();
 
@@ -46,7 +44,16 @@ namespace Engine::Entities {
         void updateTransform();
 
         virtual void draw() = 0;
+        virtual void init();
+
+        template<typename T>
+        shared_ptr<T> getContext();
     };
+
+    template<typename T>
+    shared_ptr<T> Entity::getContext() {
+        return std::static_pointer_cast<T>(context);
+    }
 }
 
 

@@ -3,23 +3,25 @@
 //
 #include "Entity.h"
 
-using namespace Engine::Entities;
+namespace Engine::Entities {
+    shared_ptr<EngineContext> Entity::context = nullptr;
 
+    void Entity::setContext(shared_ptr<EngineContext> &_context) {
+        context = _context;
+    }
 
-shared_ptr<EngineContext> Entity::context = nullptr;
+    void Entity::addChild(Entity *entity) {
+        children.push_back(shared_ptr<Entity>(entity));
+        transform.addChild(&entity->transform);
+    }
 
-void Entity::setContext(shared_ptr<EngineContext> &_context) {
-    context = _context;
-}
+    Entity::Entity() {
+    }
 
-void Entity::addChild(Entity *entity) {
-    children.push_back(shared_ptr<Entity>(entity));
-    transform.addChild(&entity->transform);
-}
+    void Entity::updateTransform() {
+        transform.updateChildren();
+    }
 
-Entity::Entity() {
-}
-
-void Entity::updateTransform() {
-    transform.updateChildren();
+    void Entity::init() {
+    }
 }

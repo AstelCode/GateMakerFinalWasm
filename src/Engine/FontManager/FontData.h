@@ -6,8 +6,9 @@
 #define WASM_PROJECT_FONT_H
 
 #include <string>
-using namespace std;
+
 namespace Engine::FontManager {
+    using namespace std;
     struct FontData {
         string name;
         string path;

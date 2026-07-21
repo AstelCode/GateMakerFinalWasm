@@ -10,25 +10,29 @@
 #include "controllers/Keyboard.h"
 #include "FontManager/FontManager.h"
 #include "renderer/Renderer.h"
-#include "Tree/EntityTree.h"
+#include "TextureManager/TextureManager.h"
+#include "TextureAtlas/TextureAtlas.h"
 
-using namespace Engine::Controllers;
-using namespace Engine::FontManager;
-using namespace Engine::Renderer;
-namespace Engine {
-    class EntityTree;
+namespace Engine::Entities {
+    class Text;
 }
 
-using namespace Engine;
-
-
 namespace Engine {
-    struct EngineContext {
-        Mouse * mouse;
-        Keyboard * keyboard;
-        Renderer::Renderer * renderer;
-        FontManager::FontManager * font_manager;
-        EntityTree * tree;
+    class EntityTree;
+    // using namespace Engine;
+    using Engine::Controllers::Mouse;
+    using Engine::Controllers::Keyboard;
+    using Engine::EntityTree;
+
+    class EngineContext {
+    public:
+        Mouse *mouse;
+        Keyboard *keyboard;
+        Renderer::Renderer *renderer;
+        FontManager::FontManager *font_manager;
+        EntityTree *tree;
+        TextureManager::TextureManager *texture_manager;
+        TextureAtlas::TextureAtlas *texture_atlas;
     };
 }
 #endif //WASM_PROJECT_ENGINECONTEXT_H

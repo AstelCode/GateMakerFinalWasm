@@ -9,29 +9,31 @@
 
 #include "Matrix3x3.h"
 #include "TransformData.h"
-using namespace std;
 
 namespace Engine::Math {
-    class Transform:public std::enable_shared_from_this<Transform> {
+    using namespace std;
+    class Transform : public std::enable_shared_from_this<Transform> {
     public:
         Transform();
+
         TransformData getLocalTransform();
 
         TransformData getGlobal();
-        // Matrix3x3& getGlobalMatrix();
 
         void destroy();
 
-        void addChild(Transform* child);
+        void addChild(Transform *child);
 
 
         void updateChildren();
 
         void updated();
+
         Matrix3x3 localMatrix;
+
     private:
         shared_ptr<Transform> parent = nullptr;
-        vector<shared_ptr<Transform>> children;
+        vector<shared_ptr<Transform> > children;
 
         Matrix3x3 globalMatrix;
 
@@ -39,8 +41,6 @@ namespace Engine::Math {
         static long current_id;
         int id;
         bool is_updated;
-
-
     };
 }
 

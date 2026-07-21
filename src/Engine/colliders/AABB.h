@@ -8,7 +8,6 @@
 #include "Collider.h"
 #include "ColliderManager.h"
 #include <memory>
-using namespace  Engine::Math;
 
 namespace Engine::Colliders {
     class AABB {

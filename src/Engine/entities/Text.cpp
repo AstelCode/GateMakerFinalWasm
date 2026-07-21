@@ -4,93 +4,64 @@
 
 #include "Text.h"
 
-
-int Entities::Text::w() {
-    return rect.w;
-}
-
-int Entities::Text::h() {
-    return rect.h;
-}
-
-void Entities::Text::w(int w) {
-    rect.w = w;
-}
-
-void Entities::Text::h(int h) {
-    rect.h = h;
-}
-
-void Entities::Text::x(int x) {
-    rect.x = x;
-}
-
-void Entities::Text::y(int y) {
-    rect.y = y;
-}
-
-void Entities::Text::setColor(SDL_Color color) {
-    this->color = color;
-}
-
-void Entities::Text::setText(string text) {
-    this->text = text;
-}
-
-void Entities::Text::setFont(string name, int size) {
-    FontManager::FontManager *font_manager = context->font_manager;
-    font = font_manager->loadFont(name, size);
-}
-
-void Entities::Text::draw() {
-    SDL_Renderer *renderer = context->renderer->get();
-
-    if (!texture)
-        return;
-
-    SDL_Rect dst = rect;
-
-    TransformData globalTransform = transform.getGlobal();
-    dst.x = static_cast<int>(globalTransform.x);
-    dst.y = static_cast<int>(globalTransform.y);
-    dst.w = static_cast<int>(rect.w * globalTransform.scale);
-    dst.h = static_cast<int>(rect.h * globalTransform.scale);
-    SDL_Point center{
-        dst.w / 2,
-        dst.h / 2
-    };
-
-    SDL_RenderCopyEx(
-        renderer,
-        texture,
-        nullptr,
-        &dst,
-        globalTransform.angle * 180.0 / M_PI, // SDL usa grados
-        &center,
-        SDL_FLIP_NONE
-    );
-}
-
-void Entities::Text::updateTexture() {
-    SDL_Renderer *renderer = context->renderer->get();
-    SDL_Surface *surface = TTF_RenderText_Blended(
-        this->font,
-        text.c_str(),
-        color
-    );
-    if (texture) {
-        SDL_DestroyTexture(texture);
+namespace Engine::Entities {
+    int Text::w() {
+        return rect.w;
     }
-    texture = SDL_CreateTextureFromSurface(renderer, surface);
-    if (auto_resize) {
-        rect.w = surface->w;
-        rect.h = surface->h;
+
+    int Text::h() {
+        return rect.h;
     }
-    SDL_FreeSurface(surface);
-}
 
-void Entities::Text::update() {
-}
+    void Text::w(int w) {
+        rect.w = w;
+    }
 
-// void Entities::Text::update() {
-// }
+    void Text::h(int h) {
+        rect.h = h;
+    }
+
+    void Text::x(int x) {
+        rect.x = x;
+    }
+
+    void Text::y(int y) {
+        rect.y = y;
+    }
+
+    void Text::setColor(SDL_Color color) {
+        this->color = color;
+    }
+
+    void Text::setText(string text) {
+        this->text = text;
+    }
+
+    void Text::setFont(string name, int size) {
+        FontManager::FontManager *font_manager = context->font_manager;
+        font = font_manager->loadFont(name, size);
+    }
+
+    void Text::draw() {
+        if (!texture)
+            return;
+
+        auto &renderer = getContext<EngineContext>()->renderer;
+        renderer->renderTexture(texture, transform, rect);
+    }
+
+    void Text::updateTexture() {
+        auto &renderer = getContext<EngineContext>()->renderer;
+        auto &font_manager = getContext<EngineContext>()->font_manager;
+        auto surface = font_manager->loadFontSurface(font, text, color);
+        renderer->generateTexture(texture, surface);
+        SDL_FreeSurface(surface);
+        if (auto_resize) {
+            rect.w = surface->w;
+            rect.h = surface->h;
+        }
+    }
+
+    void Text::update() {
+    }
+}
